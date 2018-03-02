@@ -1,0 +1,10 @@
+1. Create a repository on GitHub
+2. Click on 'Clone or Download'
+
+git clone *result of 2* *local folder name*
+git add *files to add*
+git config .autocrlf true
+git status
+git commit --message "*message to write*"
+git push origin master
+git checkout -b *branch name*
