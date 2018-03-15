@@ -8,3 +8,6 @@ git status
 git commit --message "*message to write*"
 git push origin master
 git checkout -b *branch name*
+
+git pull 
+git rebase master (from branch: same master's level)
