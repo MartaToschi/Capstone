@@ -1,3 +1,8 @@
+#######################################
+### WEB SCRAPING IMAGES FROM GOOGLE ###
+#######################################
+
+### IMPORT ###
 import os
 import time
 import sys
@@ -5,6 +10,12 @@ import urllib
 from progressbar import ProgressBar
 
 
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+
+### SUPPORT FUNCTIONS ###
 def get_raw_html(url):
     version = (3, 0)
     curr_version = sys.version_info
@@ -35,7 +46,6 @@ def get_raw_html(url):
         except:
             return "Page Not found"
 
-
 def next_link(s):
     start_line = s.find('rg_di')
     if start_line == -1:  # If no links are found then give an error!
@@ -49,7 +59,6 @@ def next_link(s):
         content_raw = str(s[start_content + 6:end_content - 1])
         return content_raw, end_content
 
-
 def all_links(page):
     links = []
     while True:
@@ -62,7 +71,6 @@ def all_links(page):
             page = page[end_content:]
     return links
 
-
 def download_images(links, search_keyword):
     choice = input("Do you want to save the links? [y]/[n]: ")
     if choice == 'y' or choice == 'Y':
@@ -72,7 +80,7 @@ def download_images(links, search_keyword):
             f.write(str(link))
             f.write("\n")
         f.close()  # Close the file
-    num = input("Enter number of images to download (max 100): ")
+    num = input("Enter number of images to download (max 200): ")
     counter = 1
     errors = 0
     search_keyword = search_keyword.replace("%20", "_")
@@ -100,7 +108,6 @@ def download_images(links, search_keyword):
         counter += 1
     return errors
 
-
 def search():
     version = (3, 0)
     curr_version = sys.version_info
@@ -110,11 +117,11 @@ def search():
         import urllib2  # If current version of python is 2.x
 
     search_keyword = input("Enter the search query: ")
-
     # Download Image Links
     links = []
     search_keyword = search_keyword.replace(" ", "%20")
     url = 'https://www.google.com/search?q=' + search_keyword + '&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg'
+    
     raw_html = (get_raw_html(url))
     links = links + (all_links(raw_html))
     print ("Total Image Links = " + str(len(links)))
@@ -122,4 +129,6 @@ def search():
     errors = download_images(links, search_keyword)
     print ("Download Complete.\n" + str(errors) + " errors while downloading.")
 
+    
+### MAIN ###
 search()
